@@ -40,7 +40,10 @@ or
 ```
 show-pins⏎
 ```
-If you have error with this command, do `sudo apt install libinline-files-perl`
+If you have error with this command, do 
+```
+sudo apt install libinline-files-perl
+```
 Then try again
 
 
