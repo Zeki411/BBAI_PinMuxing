@@ -30,3 +30,13 @@ $ sudo reboot
 # BBAI_PinMuxing Example (SPI active)
 
 This BBAI compatible dts file active 2 spidev0 and spidev1 for bbai
+
+# BBAI_PinMuxing Check
+Show pin configuration (aka the pinmux) - note the pin IDs in column 2 are off due to architecture differences with the BBB
+```
+/opt/scripts/device/bone/show-pins.pl⏎ orshow-pins⏎
+```
+If you have error with this command, do `sudo apt install libinline-files-perl`
+Then try again
+
+
