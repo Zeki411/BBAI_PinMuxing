@@ -12,9 +12,8 @@ To operate Pinmux procedure, Open a terminal on BBAI and do these following step
 
 3. Create and custom the device tree for beaglebone ai
 
-
 `$ nano BeagleBoard-DeviceTrees/src/arm/am5729-beagleboneai-custom.dts`
-(we write custom device tree for bbai in this file, see example to active SPI)
+(we write custom device tree for bbai here, see example to active SPI)
 ```
 $ cd BeagleBoard-DeviceTrees  
 $ make src/arm/am5729-beagleboneai-custom.dtb  
