@@ -7,13 +7,6 @@
   base_dtb_timestamp = __TIMESTAMP__;  
  };  
 };  
-// eventually these should be available in a header  
-#define P9_14  (0x3400 + 4 * 107)  
-#define P9_16  (0x3400 + 4 * 108)  
-#define P9_19a (0x3400 + 4 * 16)  
-#define P9_19b (0x3400 + 4 * 95)  
-#define P9_20a (0x3400 + 4 * 17)  
-#define P9_20b (0x3400 + 4 * 94)  
 
 // enable spi-2 on P9.17a (cs0), P9.22b (sclk), P9.18a (d0), P9.21b(d1)  
 &dra7_pmx_core {
@@ -54,45 +47,6 @@
         };
 };
 
-// enable spi-3 on P8.05 (cs0), P8.20 (sclk), P8.24 (d0), P8.25(d1)  
-&dra7_pmx_core {
-        mcspi3_pins: pinmux_mcspi3_pins {
-                pinctrl-single,pins = <
-                        DRA7XX_CORE_IOPAD(0x3780, MUX_MODE1 | PIN_INPUT) /* AC4: P8.20: mmc3_cmd.spi3_sclk */
-                        DRA7XX_CORE_IOPAD(0x3788, MUX_MODE1 | PIN_INPUT) /* AC6: P8.24: mmc3_dat1.spi3_d0 */
-                        DRA7XX_CORE_IOPAD(0x3784, MUX_MODE1 | PIN_OUTPUT) /* AC7: P8.25: mmc3_dat0.spi3_d1 */
-                        DRA7XX_CORE_IOPAD(0x378C, MUX_MODE1 | PIN_OUTPUT) /* AC9: P8.05: mmc3_cmd.spi3_cs0 */
-                >;
-        };
-};
-
-&mcspi3 {
-        #address-cells = <1>;
-        #size-cells = <0>;
-        status = "okay";
-        pinctrl-names = "default";
-        pinctrl-0 = <&mcspi3_pins>;
-        //ti,pindir-d0-out-d1-in; //optional, swaps MISO and MOSI pins
-
-        //cs-gpios = <0>, <&gpio7 11 0>;
-
-        channel@0 {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                compatible = "spidev";
-                reg = <0>;
-                spi-max-frequency = <24000000>;
-        };
-
-        channel@1 {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                compatible = "spidev";
-                reg = <1>;
-                spi-max-frequency = <24000000>;
-        };
-};
-
 // Here's the obnoxious part: since u-boot doesn't have same pin defaults yet, all pins not  
 // explicitly setup above should be overridden here.  This will eventually no longer be needed.  
 &cape_pins_default {  
@@ -101,21 +55,21 @@
   DRA7XX_CORE_IOPAD( 0x3620, PIN_INPUT          | MUX_MODE14 ) // P9.11b  
   DRA7XX_CORE_IOPAD( 0x36AC, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.12  
   DRA7XX_CORE_IOPAD( 0x3730, PIN_INPUT_PULLDOWN | MUX_MODE15 ) // P9.13  (no gpio)  
- // DRA7XX_CORE_IOPAD( 0x35AC, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.14  
+  DRA7XX_CORE_IOPAD( 0x35AC, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.14  
   DRA7XX_CORE_IOPAD( 0x3514, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.15  
- // DRA7XX_CORE_IOPAD( 0x35B0, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.16  
-  DRA7XX_CORE_IOPAD( 0x37CC, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.17a  
-  DRA7XX_CORE_IOPAD( 0x36B8, PIN_INPUT          | MUX_MODE14 ) // P9.17b  
-  DRA7XX_CORE_IOPAD( 0x37C8, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.18a  
-  DRA7XX_CORE_IOPAD( 0x36B4, PIN_INPUT          | MUX_MODE14 ) // P9.18b  
- // DRA7XX_CORE_IOPAD( 0x3440, PIN_INPUT_PULLUP   | MUX_MODE14 ) // P9.19a  
- // DRA7XX_CORE_IOPAD( 0x357C, PIN_INPUT          | MUX_MODE14 ) // P9.19b  
- // DRA7XX_CORE_IOPAD( 0x3444, PIN_INPUT_PULLUP   | MUX_MODE14 ) // P9.20a  
- // DRA7XX_CORE_IOPAD( 0x3578, PIN_INPUT          | MUX_MODE14 ) // P9.20b  
-  DRA7XX_CORE_IOPAD( 0x34F0, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.21a  
-  DRA7XX_CORE_IOPAD( 0x37C4, PIN_INPUT          | MUX_MODE14 ) // P9.21b  
-  DRA7XX_CORE_IOPAD( 0x369C, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.22a  
-  DRA7XX_CORE_IOPAD( 0x37C0, PIN_INPUT          | MUX_MODE14 ) // P9.22b  
+  DRA7XX_CORE_IOPAD( 0x35B0, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.16  
+ // DRA7XX_CORE_IOPAD( 0x37CC, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.17a  
+  DRA7XX_CORE_IOPAD( 0x36B8, PIN_INPUT          | MUX_MODE15 ) // P9.17b  
+ // DRA7XX_CORE_IOPAD( 0x37C8, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.18a  
+  DRA7XX_CORE_IOPAD( 0x36B4, PIN_INPUT          | MUX_MODE15 ) // P9.18b  
+  DRA7XX_CORE_IOPAD( 0x3440, PIN_INPUT_PULLUP   | MUX_MODE14 ) // P9.19a  
+  DRA7XX_CORE_IOPAD( 0x357C, PIN_INPUT          | MUX_MODE14 ) // P9.19b  
+  DRA7XX_CORE_IOPAD( 0x3444, PIN_INPUT_PULLUP   | MUX_MODE14 ) // P9.20a  
+  DRA7XX_CORE_IOPAD( 0x3578, PIN_INPUT          | MUX_MODE14 ) // P9.20b  
+  DRA7XX_CORE_IOPAD( 0x34F0, PIN_INPUT_PULLDOWN | MUX_MODE15 ) // P9.21a  
+ // DRA7XX_CORE_IOPAD( 0x37C4, PIN_INPUT          | MUX_MODE14 ) // P9.21b  
+  DRA7XX_CORE_IOPAD( 0x369C, PIN_INPUT_PULLDOWN | MUX_MODE15 ) // P9.22a  
+ // DRA7XX_CORE_IOPAD( 0x37C0, PIN_INPUT          | MUX_MODE14 ) // P9.22b  
   DRA7XX_CORE_IOPAD( 0x37B4, PIN_INPUT_PULLUP   | MUX_MODE14 ) // P9.23  
   DRA7XX_CORE_IOPAD( 0x368C, PIN_INPUT_PULLUP   | MUX_MODE14 ) // P9.24  
   DRA7XX_CORE_IOPAD( 0x3694, PIN_INPUT_PULLDOWN | MUX_MODE14 ) // P9.25  
@@ -194,4 +148,3 @@
   DRA7XX_CORE_IOPAD( 0x3638, PIN_INPUT          | MUX_MODE14 ) // P8.46b  
  >;  
 };  
- 
